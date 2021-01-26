@@ -1,5 +1,6 @@
 <script context="module">
   import stateNames from '../data/stateNames';
+  import requests from '../data/requests';
 
   export async function preload(page) {
     console.log({ page });
@@ -12,7 +13,10 @@
         return;
       }
 
-      return { state };
+      const statesStats = await requests.stateStats(state);
+      console.log({ statesStats });
+
+      return { state, statesStats };
     } catch (e) {
       this.error(500, 'Something went wrong.');
       return;
@@ -25,6 +29,7 @@
   import CovidStat from '../components/CovidStat.svelte';
 
   export let state;
+  export let statesStats;
 </script>
 
 <svelte:head>
@@ -35,5 +40,5 @@
   <div class="container" />
   <h1>Covid 19 - {state}</h1>
 </div>
-<CovidStat />
+<CovidStat {...statesStats} />
 <CovidChart />
