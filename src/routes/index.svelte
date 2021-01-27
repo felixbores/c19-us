@@ -3,10 +3,13 @@
 
   export async function preload() {
     try {
-      const usStats = await requests.usStats();
+      const stats = await requests.usStats();
+      const historic = await requests.historicUS();
 
-      return { usStats };
+      return { stats, historic };
     } catch (e) {
+      console.log(e);
+
       this.error(500, 'Something went wrong.');
       return;
     }
@@ -18,8 +21,10 @@
   import CovidStat from '../components/CovidStat.svelte';
   import TableContainer from '../components/TableContainer.svelte';
 
-  export let usStats;
-  console.log({ usStats });
+  export let stats;
+  export let historic;
+
+  console.log({ stats, historic });
 </script>
 
 <svelte:head>
@@ -31,6 +36,6 @@
   <h1>Covid 19 - US</h1>
 </div>
 
-<CovidStat {...usStats} />
+<CovidStat {...stats} />
 <CovidChart />
 <TableContainer />

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { parseUsStats, parseStateStats } from './parsers';
+import { parseUsStats, parseStateStats, parseHistoricUS } from './parsers';
 
 async function usStats() {
   const response = await axios.get(
@@ -17,7 +17,16 @@ async function stateStats(state) {
   return parseStateStats(state, response.data);
 }
 
+async function historicUS() {
+  const response = await axios.get(
+    'https://api.covidtracking.com/v1/us/daily.json'
+  );
+
+  return parseHistoricUS(response.data);
+}
+
 export default {
   usStats,
   stateStats,
+  historicUS,
 };
